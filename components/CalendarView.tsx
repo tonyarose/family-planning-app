@@ -77,11 +77,19 @@ export default function CalendarView({ events, loading, categoryColor = "blue" }
     () =>
       events.map((e) => {
         const isAllDay = !e.start.includes("T");
-        const start = new Date(e.start);
-        let end = new Date(e.end || e.start);
-        // Google Calendar uses exclusive end dates for all-day events — subtract one day
-        if (isAllDay && end > start) {
-          end = new Date(end.getTime() - 24 * 60 * 60 * 1000);
+        let start: Date, end: Date;
+        if (isAllDay) {
+          // Parse date-only strings as local time to avoid UTC timezone shift
+          const [sy, sm, sd] = e.start.split("-").map(Number);
+          start = new Date(sy, sm - 1, sd);
+          const endStr = e.end || e.start;
+          const [ey, em, ed] = endStr.split("-").map(Number);
+          // Google Calendar uses exclusive end dates — subtract one day
+          end = new Date(ey, em - 1, ed - 1);
+          if (end < start) end = start;
+        } else {
+          start = new Date(e.start);
+          end = new Date(e.end || e.start);
         }
         return { id: e.id, title: e.summary, start, end, resource: { link: e.htmlLink, categorySlug: e.categorySlug }, allDay: isAllDay };
       }),
