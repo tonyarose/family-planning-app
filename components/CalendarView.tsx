@@ -26,6 +26,7 @@ const EVENT_COLORS: Record<string, string> = {
   blue: "#3b82f6",
   yellow: "#eab308",
   purple: "#a855f7",
+  gray: "#6b7280",
 };
 
 const SLUG_TO_COLOR: Record<string, string> = {
@@ -36,6 +37,12 @@ const SLUG_TO_COLOR: Record<string, string> = {
 };
 
 const HEADER_COLORS: Record<string, { bar: string; title: string; toggle: string; activeToggle: string }> = {
+  gray: {
+    bar: "bg-gray-600",
+    title: "text-white",
+    toggle: "text-gray-200 hover:text-white",
+    activeToggle: "bg-gray-700 text-white shadow",
+  },
   green: {
     bar: "bg-green-600",
     title: "text-white",

@@ -61,7 +61,7 @@ export default function DashboardContent() {
   return (
     <div className="mt-10 space-y-8">
       {/* Full-width calendar */}
-      <CalendarView events={events} loading={loading} categoryColor="purple" />
+      <CalendarView events={events} loading={loading} categoryColor="gray" />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
       {/* Upcoming Events list */}
