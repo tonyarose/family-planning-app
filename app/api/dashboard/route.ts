@@ -16,7 +16,7 @@ export async function GET() {
     Promise.all(
       CATEGORIES.map(async (cat) => {
         const keywords = CATEGORY_KEYWORDS[cat.slug] ?? [];
-        const events = await getUpcomingEvents(session.accessToken!, keywords, 5);
+        const events = await getUpcomingEvents(session.accessToken!, keywords, 10);
         return events.map((e) => ({ ...e, categorySlug: cat.slug, categoryName: cat.name, categoryIcon: cat.icon }));
       })
     ),
@@ -38,7 +38,7 @@ export async function GET() {
       return true;
     })
     .sort((a, b) => a.start.localeCompare(b.start))
-    .slice(0, 8);
+    .slice(0, 30);
 
   return NextResponse.json({ events: allEvents, tasksByCategory: tasksResults });
 }
