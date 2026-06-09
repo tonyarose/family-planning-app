@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #faf8f4;
+  --foreground: #1c1917;
 }
 
 @theme inline {
@@ -12,15 +12,60 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* react-big-calendar overrides */
+.rbc-wrapper .rbc-calendar {
+  font-family: inherit;
+  font-size: 0.8125rem;
+}
+.rbc-wrapper .rbc-toolbar button {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border-color: #e5e7eb;
+  color: #374151;
+}
+.rbc-wrapper .rbc-toolbar button:hover,
+.rbc-wrapper .rbc-toolbar button.rbc-active {
+  background-color: #f3f4f6;
+  border-color: #d1d5db;
+  box-shadow: none;
+}
+.rbc-wrapper .rbc-toolbar-label {
+  font-weight: 600;
+  color: #111827;
+}
+.rbc-wrapper .rbc-header {
+  font-weight: 500;
+  color: #6b7280;
+  border-color: #f3f4f6;
+  padding: 6px 0;
+}
+.rbc-wrapper .rbc-month-view,
+.rbc-wrapper .rbc-time-view {
+  border-color: #f3f4f6;
+  border-radius: 8px;
+}
+.rbc-wrapper .rbc-day-bg + .rbc-day-bg,
+.rbc-wrapper .rbc-month-row + .rbc-month-row {
+  border-color: #f3f4f6;
+}
+.rbc-wrapper .rbc-today {
+  background-color: #f0f9ff;
+}
+.rbc-wrapper .rbc-off-range-bg {
+  background-color: #fafafa;
+}
+.rbc-wrapper .rbc-event {
+  padding: 2px 5px;
+  font-size: 0.7rem;
+}
+.rbc-wrapper .rbc-show-more {
+  font-size: 0.7rem;
+  color: #6366f1;
 }
