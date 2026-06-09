@@ -5,6 +5,7 @@ import Link from "next/link";
 import { COLOR_MAP } from "@/lib/categories";
 import type { SheetTask } from "@/lib/google-sheets";
 import CalendarView from "@/components/CalendarView";
+import SchedulingAssistant from "@/components/SchedulingAssistant";
 
 type DashboardEvent = {
   id: string;
@@ -137,6 +138,8 @@ export default function DashboardContent() {
         )}
       </section>
       </div>
+
+      <SchedulingAssistant />
     </div>
   );
 }
