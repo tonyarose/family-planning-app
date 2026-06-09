@@ -4,7 +4,6 @@ import { useEffect, useState, useCallback } from "react";
 import type { Category } from "@/lib/categories";
 import type { DriveFile, CalendarEvent } from "@/lib/google-drive";
 import CalendarView from "@/components/CalendarView";
-import SchedulingAssistant from "@/components/SchedulingAssistant";
 
 type Props = {
   category: Category;
@@ -162,8 +161,6 @@ async function createFile() {
         categoryColor={category.color}
       />
 
-      {/* AI Scheduling Assistant — House Projects only */}
-      {category.slug === "house-projects" && <SchedulingAssistant />}
 
       {/* Files + Tasks side by side below */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
