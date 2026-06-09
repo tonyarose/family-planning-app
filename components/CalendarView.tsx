@@ -70,7 +70,7 @@ const HEADER_COLORS: Record<string, { bar: string; title: string; toggle: string
 };
 
 export default function CalendarView({ events, loading, categoryColor = "blue" }: Props) {
-  const [view, setView] = useState<"month" | "week">("month");
+  const [view, setView] = useState<"month" | "week">("week");
   const [date, setDate] = useState(new Date());
 
   const calEvents = useMemo(
