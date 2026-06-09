@@ -9,6 +9,14 @@ const ALLOWED_EMAILS = new Set([
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   debug: true,
+  logger: {
+    error: (code, metadata) => {
+      console.error("[NextAuth Error]", code, JSON.stringify(metadata, null, 2));
+    },
+    warn: (code) => {
+      console.warn("[NextAuth Warn]", code);
+    },
+  },
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
