@@ -148,9 +148,9 @@ export default function SchedulingAssistant() {
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {/* Chat Panel */}
-      <section className="bg-white rounded-2xl border border-gray-200 flex flex-col h-[500px]">
+      <section className="bg-white rounded-2xl border border-gray-200 flex flex-col h-[420px] md:h-[500px]">
         <div className="px-6 py-4 border-b border-gray-100">
           <h2 className="font-semibold text-gray-900">Scheduling Assistant</h2>
           <p className="text-xs text-gray-400 mt-0.5">

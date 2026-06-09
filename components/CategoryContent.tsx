@@ -166,7 +166,7 @@ async function createFile() {
       {category.slug === "house-projects" && <SchedulingAssistant />}
 
       {/* Files + Tasks side by side below */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Files — 2/3 width */}
         <div className="lg:col-span-2">
           <section className="bg-white rounded-2xl border border-gray-200 p-6">

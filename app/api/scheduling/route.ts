@@ -210,16 +210,15 @@ Suggest 3–4 time windows for this service visit.`;
 
   await saveSchedulingRequest(session.accessToken as string, newRequest);
 
-  // Email notification to Tony
-  if (session.user?.email) {
-    sendEmailNotification(
-      session.accessToken as string,
-      session.user.email,
-      newRequest.requestedBy,
-      message,
-      suggestedTimes
-    ).catch((err) => console.error("[scheduling] email failed:", err));
-  }
+  // Email notification — always goes to Tony regardless of who submitted
+  const TONY_EMAIL = "tonya.newstetter@gmail.com";
+  sendEmailNotification(
+    session.accessToken as string,
+    TONY_EMAIL,
+    newRequest.requestedBy,
+    message,
+    suggestedTimes
+  ).catch((err) => console.error("[scheduling] email failed:", err));
 
   return NextResponse.json({ request: newRequest, summary });
 }

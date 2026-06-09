@@ -22,7 +22,7 @@ export default async function CategoryPage({
   return (
     <div className="min-h-screen flex flex-col">
       <NavBar />
-      <main className="flex-1 max-w-5xl mx-auto w-full px-6 py-10">
+      <main className="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-10">
         <div className="flex items-center gap-3 mb-8">
           <span className="text-4xl">{category.icon}</span>
           <div>

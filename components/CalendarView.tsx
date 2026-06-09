@@ -130,7 +130,7 @@ export default function CalendarView({ events, loading, categoryColor = "blue" }
             date={date}
             onNavigate={(newDate) => setDate(newDate)}
             toolbar={true}
-            style={{ height: view === "month" ? 500 : 400 }}
+            style={{ height: view === "month" ? (typeof window !== "undefined" && window.innerWidth < 640 ? 340 : 500) : 400 }}
             onSelectEvent={(e) => {
               if (e.resource?.link) window.open(e.resource.link, "_blank");
             }}
