@@ -47,7 +47,7 @@ export const CATEGORY_KEYWORDS: Record<string, string[]> = {
   ],
   "noah": [
     "noah", "camp", "school", "pediatrician", "dentist", "orthodontist",
-    "practice", "game", "recital", "playdate", "pickup", "dropoff", "tutor",
+    "practice", "game", "recital", "playdate", "tutor",
     "sleepover", "field trip", "parent teacher", "conference", "registration",
   ],
   "financial-planning": [
