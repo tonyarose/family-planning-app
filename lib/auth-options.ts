@@ -1,6 +1,11 @@
 import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
+const ALLOWED_EMAILS = new Set([
+  "tonya.newstetter@gmail.com",
+  "michaelhsmall@gmail.com",
+]);
+
 export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
@@ -25,6 +30,9 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
+    async signIn({ user }) {
+      return ALLOWED_EMAILS.has(user.email ?? "");
+    },
     async jwt({ token, account }) {
       if (account) {
         token.accessToken = account.access_token;
