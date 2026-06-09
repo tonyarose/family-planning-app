@@ -42,8 +42,8 @@ export const CATEGORY_KEYWORDS: Record<string, string[]> = {
     "contractor", "repair", "renovation", "plumber", "electrician", "hvac",
     "roof", "roofing", "landscap", "lawn", "yard", "garden", "fence", "deck",
     "paint", "flooring", "tile", "inspection", "permit", "handyman", "install",
-    "home depot", "lowe", "hardware", "remodel", "construction", "foundation",
-    "gutter", "drywall", "carpet", "window", "door", "garage",
+    "home depot", "hardware", "remodel", "construction", "foundation",
+    "gutter", "drywall", "carpet", "window", "door", "garage", "home",
   ],
   "noah": [
     "noah", "camp", "school", "pediatrician", "dentist", "orthodontist",
