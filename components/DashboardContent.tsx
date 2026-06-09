@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { COLOR_MAP } from "@/lib/categories";
+import { COLOR_MAP, CATEGORIES } from "@/lib/categories";
 import type { SheetTask } from "@/lib/google-sheets";
 import CalendarView from "@/components/CalendarView";
 import SchedulingAssistant from "@/components/SchedulingAssistant";
@@ -31,10 +31,20 @@ function formatDate(iso: string): string {
   return d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
 }
 
+const SLUG_TO_COLOR: Record<string, string> = {
+  "house-projects": "green",
+  "noah": "blue",
+  "financial-planning": "yellow",
+  "vacations": "purple",
+};
+
 export default function DashboardContent() {
   const [events, setEvents] = useState<DashboardEvent[]>([]);
   const [tasksByCategory, setTasksByCategory] = useState<CategoryTasks[]>([]);
   const [loading, setLoading] = useState(true);
+  const [quickTaskText, setQuickTaskText] = useState("");
+  const [quickTaskCategory, setQuickTaskCategory] = useState(CATEGORIES[0].slug);
+  const [quickTaskSaving, setQuickTaskSaving] = useState(false);
 
   useEffect(() => {
     fetch("/api/dashboard")
@@ -46,6 +56,26 @@ export default function DashboardContent() {
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
+
+  async function addQuickTask() {
+    if (!quickTaskText.trim() || quickTaskSaving) return;
+    setQuickTaskSaving(true);
+    const cat = CATEGORIES.find((c) => c.slug === quickTaskCategory)!;
+    const res = await fetch(`/api/tasks?category=${encodeURIComponent(cat.name)}`);
+    const data = await res.json();
+    const existing: SheetTask[] = data.tasks ?? [];
+    const updated = [...existing, { id: crypto.randomUUID(), text: quickTaskText.trim(), done: false }];
+    await fetch("/api/tasks", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ category: cat.name, tasks: updated }),
+    });
+    setQuickTaskText("");
+    // Refresh task list
+    const refreshed = await fetch("/api/dashboard").then((r) => r.json());
+    setTasksByCategory(refreshed.tasksByCategory ?? []);
+    setQuickTaskSaving(false);
+  }
 
   const categoriesWithTasks = tasksByCategory.filter((c) => c.tasks.length > 0);
   const openTasksByCategory = categoriesWithTasks.map((c) => ({
@@ -138,6 +168,48 @@ export default function DashboardContent() {
         )}
       </section>
       </div>
+
+      {/* Quick Add Task */}
+      <section className="bg-white rounded-2xl border border-gray-200 p-6">
+        <h2 className="font-semibold text-gray-900 mb-4">Quick Add Task</h2>
+        <div className="flex gap-2 flex-wrap">
+          <div className="flex gap-1 bg-gray-100 rounded-xl p-1">
+            {CATEGORIES.map((cat) => {
+              const colorKey = SLUG_TO_COLOR[cat.slug] ?? "blue";
+              const colors = COLOR_MAP[colorKey];
+              const active = quickTaskCategory === cat.slug;
+              return (
+                <button
+                  key={cat.slug}
+                  onClick={() => setQuickTaskCategory(cat.slug)}
+                  className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg transition-colors ${
+                    active ? `${colors.badge} font-medium` : "text-gray-500 hover:text-gray-700"
+                  }`}
+                >
+                  <span>{cat.icon}</span>
+                  <span>{cat.name}</span>
+                </button>
+              );
+            })}
+          </div>
+          <input
+            type="text"
+            value={quickTaskText}
+            onChange={(e) => setQuickTaskText(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && addQuickTask()}
+            placeholder="Add a task..."
+            className="flex-1 min-w-48 text-sm border border-gray-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+            disabled={quickTaskSaving}
+          />
+          <button
+            onClick={addQuickTask}
+            disabled={quickTaskSaving || !quickTaskText.trim()}
+            className="text-sm bg-indigo-600 text-white px-4 py-2 rounded-xl hover:bg-indigo-700 disabled:opacity-50 transition-colors"
+          >
+            {quickTaskSaving ? "Saving..." : "Add"}
+          </button>
+        </div>
+      </section>
 
       <SchedulingAssistant />
     </div>
