@@ -57,6 +57,20 @@ export default function DashboardContent() {
       .finally(() => setLoading(false));
   }, []);
 
+  async function toggleDashboardTask(categorySlug: string, taskId: string) {
+    const cat = CATEGORIES.find((c) => c.slug === categorySlug)!;
+    const catTasks = tasksByCategory.find((c) => c.slug === categorySlug)?.tasks ?? [];
+    const updated = catTasks.map((t) => t.id === taskId ? { ...t, done: !t.done } : t);
+    setTasksByCategory((prev) =>
+      prev.map((c) => c.slug === categorySlug ? { ...c, tasks: updated } : c)
+    );
+    await fetch("/api/tasks", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ category: cat.name, tasks: updated }),
+    });
+  }
+
   async function addQuickTask() {
     if (!quickTaskText.trim() || quickTaskSaving) return;
     setQuickTaskSaving(true);
@@ -155,9 +169,16 @@ export default function DashboardContent() {
                   </Link>
                   <ul className="space-y-1.5">
                     {cat.tasks.map((t) => (
-                      <li key={t.id} className="flex items-center gap-2">
-                        <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${colors.badge.split(" ")[0]}`} />
-                        <span className="text-sm text-gray-700 truncate">{t.text}</span>
+                      <li key={t.id} className="flex items-center gap-2 group">
+                        <input
+                          type="checkbox"
+                          checked={t.done}
+                          onChange={() => toggleDashboardTask(cat.slug, t.id)}
+                          className="rounded accent-indigo-600 shrink-0"
+                        />
+                        <span className={`text-sm truncate ${t.done ? "line-through text-gray-400" : "text-gray-700"}`}>
+                          {t.text}
+                        </span>
                       </li>
                     ))}
                   </ul>
