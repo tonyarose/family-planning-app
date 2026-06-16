@@ -27,7 +27,8 @@ type CategoryTasks = {
 
 function formatDate(iso: string): string {
   if (!iso) return "";
-  const d = new Date(iso);
+  // Date-only strings (no "T") must be parsed as local time to avoid UTC timezone shift
+  const d = iso.includes("T") ? new Date(iso) : new Date(iso + "T00:00:00");
   return d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
 }
 
