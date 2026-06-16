@@ -22,16 +22,12 @@ export default function SchedulingAssistant() {
   ]);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
-  const [pendingRequests, setPendingRequests] = useState<SchedulingRequest[]>(
-    []
-  );
+  const [pendingRequests, setPendingRequests] = useState<SchedulingRequest[]>([]);
   const [loadingPending, setLoadingPending] = useState(true);
   const [respondingId, setRespondingId] = useState<string | null>(null);
   const [alternativeTime, setAlternativeTime] = useState("");
   const [alternativeNote, setAlternativeNote] = useState("");
-  const [showAlternativeFor, setShowAlternativeFor] = useState<string | null>(
-    null
-  );
+  const [showAlternativeFor, setShowAlternativeFor] = useState<string | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -150,36 +146,35 @@ export default function SchedulingAssistant() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {/* Chat Panel */}
-      <section className="bg-white rounded-2xl border border-gray-200 flex flex-col h-[420px] md:h-[500px]">
-        <div className="px-6 py-4 border-b border-gray-100">
-          <h2 className="font-semibold text-gray-900">Scheduling Assistant</h2>
-          <p className="text-xs text-gray-400 mt-0.5">
+      <section className="bg-[#fffdf9] rounded-2xl border border-[#e5ddd5] flex flex-col h-[420px] md:h-[500px]">
+        <div className="px-6 py-4 border-b border-[#efe7de]">
+          <h2 className="font-semibold text-[#3d2f27]">Scheduling Assistant</h2>
+          <p className="text-xs text-[#9c8e82] mt-0.5">
             Describe what you need to schedule
           </p>
         </div>
 
-        {/* Messages */}
         <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
           {messages.map((msg) => (
             <div key={msg.id}>
               {msg.role === "system" ? (
-                <div className="flex items-center gap-2 text-xs text-gray-400 italic">
-                  <span className="inline-block w-2 h-2 rounded-full bg-gray-300 animate-pulse" />
+                <div className="flex items-center gap-2 text-xs text-[#9c8e82] italic">
+                  <span className="inline-block w-2 h-2 rounded-full bg-[#c9b5a6] animate-pulse" />
                   {msg.content}
                 </div>
               ) : msg.role === "user" ? (
                 <div className="flex justify-end">
-                  <div className="bg-green-600 text-white text-sm rounded-2xl rounded-tr-sm px-4 py-2.5 max-w-[80%]">
+                  <div className="bg-[#c17a5a] text-white text-sm rounded-2xl rounded-tr-sm px-4 py-2.5 max-w-[80%]">
                     {msg.content}
                   </div>
                 </div>
               ) : (
                 <div className="flex gap-2.5 items-start">
-                  <div className="w-7 h-7 rounded-full bg-green-100 flex items-center justify-center text-sm shrink-0">
-                    🏠
+                  <div className="w-7 h-7 rounded-full bg-[#eef3ef] flex items-center justify-center text-sm shrink-0">
+                    🏡
                   </div>
                   <div className="flex-1 space-y-2">
-                    <div className="bg-gray-50 border border-gray-100 text-sm rounded-2xl rounded-tl-sm px-4 py-2.5 max-w-[90%]">
+                    <div className="bg-[#f5efe8] border border-[#e5ddd5] text-sm rounded-2xl rounded-tl-sm px-4 py-2.5 max-w-[90%] text-[#3d2f27]">
                       {msg.content.split("**").map((part, i) =>
                         i % 2 === 1 ? (
                           <strong key={i}>{part}</strong>
@@ -193,9 +188,9 @@ export default function SchedulingAssistant() {
                         {msg.suggestedTimes.map((t, i) => (
                           <div
                             key={i}
-                            className="flex items-center gap-2 text-xs text-gray-600 bg-green-50 border border-green-100 rounded-lg px-3 py-2"
+                            className="flex items-center gap-2 text-xs text-[#3d2f27] bg-[#eef3ef] border border-[#c8daca] rounded-lg px-3 py-2"
                           >
-                            <span className="text-green-600">📅</span>
+                            <span className="text-[#5a8f62]">📅</span>
                             <span>{t}</span>
                           </div>
                         ))}
@@ -209,8 +204,7 @@ export default function SchedulingAssistant() {
           <div ref={bottomRef} />
         </div>
 
-        {/* Input */}
-        <div className="px-6 py-4 border-t border-gray-100">
+        <div className="px-6 py-4 border-t border-[#efe7de]">
           <div className="flex gap-2">
             <input
               type="text"
@@ -218,13 +212,13 @@ export default function SchedulingAssistant() {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
               placeholder="e.g. Schedule a plumber for next week..."
-              className="flex-1 text-sm border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-300"
+              className="flex-1 text-sm border border-[#e5ddd5] bg-white rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#c17a5a]/30 placeholder:text-[#c9b5a6]"
               disabled={sending}
             />
             <button
               onClick={sendMessage}
               disabled={sending || !input.trim()}
-              className="text-sm bg-green-600 text-white px-4 py-2.5 rounded-xl hover:bg-green-700 disabled:opacity-50 transition-colors"
+              className="text-sm bg-[#6b8f71] text-white px-4 py-2.5 rounded-xl hover:bg-[#567260] disabled:opacity-50 transition-colors font-medium"
             >
               {sending ? "..." : "Send"}
             </button>
@@ -233,36 +227,36 @@ export default function SchedulingAssistant() {
       </section>
 
       {/* Pending Approvals Panel */}
-      <section className="bg-white rounded-2xl border border-gray-200 p-6">
+      <section className="bg-[#fffdf9] rounded-2xl border border-[#e5ddd5] p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="font-semibold text-gray-900">Pending Approvals</h2>
+          <h2 className="font-semibold text-[#3d2f27]">Pending Approvals</h2>
           {pendingRequests.length > 0 && (
-            <span className="text-xs bg-amber-100 text-amber-700 font-medium px-2 py-0.5 rounded-full">
+            <span className="text-xs bg-[#f0e2c8] text-[#6b4f15] font-medium px-2 py-0.5 rounded-full">
               {pendingRequests.length} waiting
             </span>
           )}
         </div>
 
         {loadingPending ? (
-          <p className="text-sm text-gray-400">Loading...</p>
+          <p className="text-sm text-[#9c8e82]">Loading...</p>
         ) : pendingRequests.length === 0 ? (
           <div className="text-center py-8">
             <div className="text-3xl mb-2">✅</div>
-            <p className="text-sm text-gray-400">No pending scheduling requests.</p>
+            <p className="text-sm text-[#9c8e82]">No pending scheduling requests.</p>
           </div>
         ) : (
           <div className="space-y-5 overflow-y-auto max-h-[420px] pr-1">
             {pendingRequests.map((req) => (
               <div
                 key={req.id}
-                className="border border-amber-100 bg-amber-50 rounded-xl p-4 space-y-3"
+                className="border border-[#e5cfaa] bg-[#f7f0e4] rounded-xl p-4 space-y-3"
               >
                 <div>
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-medium text-amber-700 uppercase tracking-wide">
+                    <span className="text-xs font-semibold text-[#6b4f15] uppercase tracking-wide">
                       From {req.requestedBy}
                     </span>
-                    <span className="text-xs text-gray-400">
+                    <span className="text-xs text-[#9c8e82]">
                       {new Date(req.createdAt).toLocaleDateString("en-US", {
                         month: "short",
                         day: "numeric",
@@ -271,22 +265,22 @@ export default function SchedulingAssistant() {
                       })}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-800 mt-1 font-medium">
+                  <p className="text-sm text-[#3d2f27] mt-1 font-medium">
                     {req.message}
                   </p>
                 </div>
 
                 <div>
-                  <p className="text-xs font-medium text-gray-500 mb-1.5">
+                  <p className="text-xs font-semibold text-[#9c8e82] mb-1.5">
                     Suggested windows:
                   </p>
                   <div className="space-y-1">
                     {req.suggestedTimes.map((t, i) => (
                       <div
                         key={i}
-                        className="flex items-center gap-2 text-xs text-gray-700"
+                        className="flex items-center gap-2 text-xs text-[#3d2f27]"
                       >
-                        <span className="text-gray-400">•</span>
+                        <span className="text-[#c9b5a6]">•</span>
                         {t}
                       </div>
                     ))}
@@ -300,33 +294,28 @@ export default function SchedulingAssistant() {
                       value={alternativeTime}
                       onChange={(e) => setAlternativeTime(e.target.value)}
                       placeholder="Your preferred time (e.g. Friday June 13, 3–5 PM)"
-                      className="w-full text-xs border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-300"
+                      className="w-full text-xs border border-[#e5ddd5] bg-white rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#c17a5a]/30 placeholder:text-[#c9b5a6]"
                     />
                     <input
                       type="text"
                       value={alternativeNote}
                       onChange={(e) => setAlternativeNote(e.target.value)}
                       placeholder="Optional note for Michael"
-                      className="w-full text-xs border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-300"
+                      className="w-full text-xs border border-[#e5ddd5] bg-white rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#c17a5a]/30 placeholder:text-[#c9b5a6]"
                     />
                     <div className="flex gap-2">
                       <button
                         onClick={() =>
-                          respond(
-                            req.id,
-                            "alternative",
-                            alternativeTime,
-                            alternativeNote
-                          )
+                          respond(req.id, "alternative", alternativeTime, alternativeNote)
                         }
                         disabled={respondingId === req.id || !alternativeTime.trim()}
-                        className="flex-1 text-xs bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 disabled:opacity-50 transition-colors"
+                        className="flex-1 text-xs bg-[#6b8f71] text-white py-2 rounded-lg hover:bg-[#567260] disabled:opacity-50 transition-colors font-medium"
                       >
                         Suggest this time
                       </button>
                       <button
                         onClick={() => setShowAlternativeFor(null)}
-                        className="text-xs text-gray-500 hover:text-gray-700 px-3"
+                        className="text-xs text-[#9c8e82] hover:text-[#3d2f27] px-3"
                       >
                         Cancel
                       </button>
@@ -335,25 +324,23 @@ export default function SchedulingAssistant() {
                 ) : (
                   <div className="flex gap-2">
                     <button
-                      onClick={() =>
-                        respond(req.id, "approved", req.suggestedTimes[0])
-                      }
+                      onClick={() => respond(req.id, "approved", req.suggestedTimes[0])}
                       disabled={respondingId === req.id}
-                      className="flex-1 text-xs bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 disabled:opacity-50 transition-colors"
+                      className="flex-1 text-xs bg-[#6b8f71] text-white py-2 rounded-lg hover:bg-[#567260] disabled:opacity-50 transition-colors font-medium"
                     >
                       {respondingId === req.id ? "..." : "✓ Approve"}
                     </button>
                     <button
                       onClick={() => setShowAlternativeFor(req.id)}
                       disabled={respondingId === req.id}
-                      className="flex-1 text-xs bg-white border border-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-50 disabled:opacity-50 transition-colors"
+                      className="flex-1 text-xs bg-white border border-[#e5ddd5] text-[#3d2f27] py-2 rounded-lg hover:bg-[#faf8f4] disabled:opacity-50 transition-colors"
                     >
                       Suggest alternative
                     </button>
                     <button
                       onClick={() => respond(req.id, "declined")}
                       disabled={respondingId === req.id}
-                      className="text-xs text-gray-400 hover:text-red-500 px-2 transition-colors"
+                      className="text-xs text-[#9c8e82] hover:text-red-400 px-2 transition-colors"
                     >
                       ✕
                     </button>

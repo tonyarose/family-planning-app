@@ -27,7 +27,6 @@ type CategoryTasks = {
 
 function formatDate(iso: string): string {
   if (!iso) return "";
-  // Date-only strings (no "T") must be parsed as local time to avoid UTC timezone shift
   const d = iso.includes("T") ? new Date(iso) : new Date(iso + "T00:00:00");
   return d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
 }
@@ -86,7 +85,6 @@ export default function DashboardContent() {
       body: JSON.stringify({ category: cat.name, tasks: updated }),
     });
     setQuickTaskText("");
-    // Refresh task list
     const refreshed = await fetch("/api/dashboard").then((r) => r.json());
     setTasksByCategory(refreshed.tasksByCategory ?? []);
     setQuickTaskSaving(false);
@@ -100,102 +98,99 @@ export default function DashboardContent() {
 
   if (loading) {
     return (
-      <div className="mt-10 text-sm text-gray-400 text-center">Loading your family dashboard...</div>
+      <div className="mt-10 text-sm text-[#9c8e82] text-center">Loading your family dashboard...</div>
     );
   }
 
   return (
     <div className="mt-10 space-y-8">
-      {/* Full-width calendar */}
       <CalendarView events={events} loading={loading} categoryColor="gray" />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {/* Upcoming Events list */}
-      <section className="bg-white rounded-2xl border border-gray-200 p-6">
-        <h2 className="font-semibold text-gray-900 mb-4">Upcoming Events</h2>
-        {events.length === 0 ? (
-          <p className="text-sm text-gray-400">No upcoming events found.</p>
-        ) : (
-          <ul className="space-y-3">
-            {events.map((e) => {
-              const colors = COLOR_MAP[
-                { "house-projects": "green", noah: "blue", "financial-planning": "yellow", vacations: "purple" }[e.categorySlug] ?? "blue"
-              ];
-              return (
-                <li key={e.id} className="flex items-start gap-3">
-                  <span className="text-lg mt-0.5">{e.categoryIcon}</span>
-                  <div className="flex-1 min-w-0">
-                    <a
-                      href={e.htmlLink ?? "#"}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-blue-600 hover:underline block truncate"
-                    >
-                      {e.summary}
-                    </a>
-                    <div className="flex items-center gap-2 mt-0.5">
-                      <span className="text-xs text-gray-400">{formatDate(e.start)}</span>
-                      <span className={`text-xs px-1.5 py-0.5 rounded-full ${colors.badge}`}>
-                        {e.categoryName}
-                      </span>
-                    </div>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        )}
-      </section>
-
-      {/* Tasks by Category */}
-      <section className="bg-white rounded-2xl border border-gray-200 p-6">
-        <h2 className="font-semibold text-gray-900 mb-4">Open Tasks</h2>
-        {openTasksByCategory.length === 0 ? (
-          <p className="text-sm text-gray-400">No open tasks.</p>
-        ) : (
-          <div className="space-y-5">
-            {openTasksByCategory.map((cat) => {
-              const colorKey = { "house-projects": "green", noah: "blue", "financial-planning": "yellow", vacations: "purple" }[cat.slug] ?? "blue";
-              const colors = COLOR_MAP[colorKey];
-              return (
-                <div key={cat.slug}>
-                  <Link
-                    href={`/category/${cat.slug}`}
-                    className="flex items-center gap-1.5 mb-2 group"
-                  >
-                    <span>{cat.icon}</span>
-                    <span className={`text-xs font-semibold uppercase tracking-wide ${colors.text} group-hover:underline`}>
-                      {cat.name}
-                    </span>
-                  </Link>
-                  <ul className="space-y-1.5">
-                    {cat.tasks.map((t) => (
-                      <li key={t.id} className="flex items-center gap-2 group">
-                        <input
-                          type="checkbox"
-                          checked={t.done}
-                          onChange={() => toggleDashboardTask(cat.slug, t.id)}
-                          className="rounded accent-indigo-600 shrink-0"
-                        />
-                        <span className={`text-sm truncate ${t.done ? "line-through text-gray-400" : "text-gray-700"}`}>
-                          {t.text}
+        {/* Upcoming Events */}
+        <section className="bg-[#fffdf9] rounded-2xl border border-[#e5ddd5] p-6">
+          <h2 className="font-semibold text-[#3d2f27] mb-4">Upcoming Events</h2>
+          {events.length === 0 ? (
+            <p className="text-sm text-[#9c8e82]">No upcoming events found.</p>
+          ) : (
+            <ul className="space-y-3">
+              {events.map((e) => {
+                const colors = COLOR_MAP[SLUG_TO_COLOR[e.categorySlug] ?? "blue"];
+                return (
+                  <li key={e.id} className="flex items-start gap-3">
+                    <span className="text-lg mt-0.5">{e.categoryIcon}</span>
+                    <div className="flex-1 min-w-0">
+                      <a
+                        href={e.htmlLink ?? "#"}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-[#c17a5a] hover:underline block truncate"
+                      >
+                        {e.summary}
+                      </a>
+                      <div className="flex items-center gap-2 mt-0.5">
+                        <span className="text-xs text-[#9c8e82]">{formatDate(e.start)}</span>
+                        <span className={`text-xs px-1.5 py-0.5 rounded-full ${colors.badge}`}>
+                          {e.categoryName}
                         </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </section>
+                      </div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </section>
+
+        {/* Open Tasks */}
+        <section className="bg-[#fffdf9] rounded-2xl border border-[#e5ddd5] p-6">
+          <h2 className="font-semibold text-[#3d2f27] mb-4">Open Tasks</h2>
+          {openTasksByCategory.length === 0 ? (
+            <p className="text-sm text-[#9c8e82]">No open tasks.</p>
+          ) : (
+            <div className="space-y-5">
+              {openTasksByCategory.map((cat) => {
+                const colorKey = SLUG_TO_COLOR[cat.slug] ?? "blue";
+                const colors = COLOR_MAP[colorKey];
+                return (
+                  <div key={cat.slug}>
+                    <Link
+                      href={`/category/${cat.slug}`}
+                      className="flex items-center gap-1.5 mb-2 group"
+                    >
+                      <span>{cat.icon}</span>
+                      <span className={`text-xs font-semibold uppercase tracking-wide ${colors.text} group-hover:underline`}>
+                        {cat.name}
+                      </span>
+                    </Link>
+                    <ul className="space-y-1.5">
+                      {cat.tasks.map((t) => (
+                        <li key={t.id} className="flex items-center gap-2 group">
+                          <input
+                            type="checkbox"
+                            checked={t.done}
+                            onChange={() => toggleDashboardTask(cat.slug, t.id)}
+                            className="rounded shrink-0 accent-[#6b8f71]"
+                          />
+                          <span className={`text-sm truncate ${t.done ? "line-through text-[#9c8e82]" : "text-[#3d2f27]"}`}>
+                            {t.text}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </section>
       </div>
 
       {/* Quick Add Task */}
-      <section className="bg-white rounded-2xl border border-gray-200 p-6">
-        <h2 className="font-semibold text-gray-900 mb-4">Quick Add Task</h2>
+      <section className="bg-[#fffdf9] rounded-2xl border border-[#e5ddd5] p-6">
+        <h2 className="font-semibold text-[#3d2f27] mb-4">Quick Add Task</h2>
         <div className="flex flex-col sm:flex-row gap-2">
-          <div className="flex flex-wrap gap-1 bg-gray-100 rounded-xl p-1">
+          <div className="flex flex-wrap gap-1 bg-[#f5efe8] rounded-xl p-1">
             {CATEGORIES.map((cat) => {
               const colorKey = SLUG_TO_COLOR[cat.slug] ?? "blue";
               const colors = COLOR_MAP[colorKey];
@@ -205,7 +200,7 @@ export default function DashboardContent() {
                   key={cat.slug}
                   onClick={() => setQuickTaskCategory(cat.slug)}
                   className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg transition-colors ${
-                    active ? `${colors.badge} font-medium` : "text-gray-500 hover:text-gray-700"
+                    active ? `${colors.badge} font-semibold` : "text-[#9c8e82] hover:text-[#3d2f27]"
                   }`}
                 >
                   <span>{cat.icon}</span>
@@ -221,13 +216,13 @@ export default function DashboardContent() {
               onChange={(e) => setQuickTaskText(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && addQuickTask()}
               placeholder="Add a task..."
-              className="flex-1 text-sm border border-gray-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+              className="flex-1 text-sm border border-[#e5ddd5] bg-white rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#c17a5a]/30 placeholder:text-[#c9b5a6]"
               disabled={quickTaskSaving}
             />
             <button
               onClick={addQuickTask}
               disabled={quickTaskSaving || !quickTaskText.trim()}
-              className="text-sm bg-indigo-600 text-white px-4 py-2 rounded-xl hover:bg-indigo-700 disabled:opacity-50 transition-colors whitespace-nowrap"
+              className="text-sm bg-[#c17a5a] text-white px-4 py-2 rounded-xl hover:bg-[#a8634a] disabled:opacity-50 transition-colors whitespace-nowrap font-medium"
             >
               {quickTaskSaving ? "Saving..." : "Add"}
             </button>

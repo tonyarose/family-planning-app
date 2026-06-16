@@ -26,8 +26,8 @@ export default async function CategoryPage({
         <div className="flex items-center gap-3 mb-8">
           <span className="text-4xl">{category.icon}</span>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">{category.name}</h1>
-            <p className="text-gray-500 text-sm mt-0.5">{category.description}</p>
+            <h1 className="text-2xl font-bold text-[#3d2f27]">{category.name}</h1>
+            <p className="text-[#7a6a62] text-sm mt-0.5">{category.description}</p>
           </div>
         </div>
         <CategoryContent category={category} colors={colors} />

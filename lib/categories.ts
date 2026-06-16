@@ -70,27 +70,27 @@ export function getCategoryBySlug(slug: string): Category | undefined {
 
 export const COLOR_MAP: Record<string, { bg: string; border: string; badge: string; text: string }> = {
   green: {
-    bg: "bg-green-50",
-    border: "border-green-200",
-    badge: "bg-green-100 text-green-800",
-    text: "text-green-700",
+    bg: "bg-[#eef3ef]",
+    border: "border-[#c8daca]",
+    badge: "bg-[#dde9de] text-[#2f5e35]",
+    text: "text-[#2f5e35]",
   },
   blue: {
-    bg: "bg-blue-50",
-    border: "border-blue-200",
-    badge: "bg-blue-100 text-blue-800",
-    text: "text-blue-700",
+    bg: "bg-[#eaeff8]",
+    border: "border-[#bdd0ef]",
+    badge: "bg-[#d4e0f4] text-[#1e3d6b]",
+    text: "text-[#1e3d6b]",
   },
   yellow: {
-    bg: "bg-yellow-50",
-    border: "border-yellow-200",
-    badge: "bg-yellow-100 text-yellow-800",
-    text: "text-yellow-700",
+    bg: "bg-[#f7f0e4]",
+    border: "border-[#e5cfaa]",
+    badge: "bg-[#f0e2c8] text-[#6b4f15]",
+    text: "text-[#6b4f15]",
   },
   purple: {
-    bg: "bg-purple-50",
-    border: "border-purple-200",
-    badge: "bg-purple-100 text-purple-800",
-    text: "text-purple-700",
+    bg: "bg-[#f0ecf8]",
+    border: "border-[#cfc3ec]",
+    badge: "bg-[#e2d8f4] text-[#4a2f82]",
+    text: "text-[#4a2f82]",
   },
 };

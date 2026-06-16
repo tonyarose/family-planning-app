@@ -45,7 +45,6 @@ export default function CategoryContent({ category, colors }: Props) {
   const [tasksSaving, setTasksSaving] = useState(false);
   const [newTask, setNewTask] = useState("");
 
-
   const [creating, setCreating] = useState(false);
   const [newDocTitle, setNewDocTitle] = useState("");
   const [newDocType, setNewDocType] = useState<"doc" | "sheet">("doc");
@@ -128,7 +127,7 @@ export default function CategoryContent({ category, colors }: Props) {
     persistTasks(tasks.filter((t) => t.id !== id));
   }
 
-async function createFile() {
+  async function createFile() {
     if (!newDocTitle.trim()) return;
     setCreating(true);
     setCreateError(null);
@@ -148,60 +147,55 @@ async function createFile() {
     setCreating(false);
   }
 
-  const currentFolderId = breadcrumbs[breadcrumbs.length - 1]?.id;
   const folders = files.filter((f) => f.isFolder);
   const docs = files.filter((f) => !f.isFolder);
 
   return (
     <div className="space-y-6">
-      {/* Calendar — full width on top */}
       <CalendarView
         events={events}
         loading={eventsLoading}
         categoryColor={category.color}
       />
 
-
-      {/* Files + Tasks side by side below */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Files — 2/3 width */}
         <div className="lg:col-span-2">
-          <section className="bg-white rounded-2xl border border-gray-200 p-6">
-            <h2 className="font-semibold text-gray-900 mb-3">Google Drive Files</h2>
+          <section className="bg-[#fffdf9] rounded-2xl border border-[#e5ddd5] p-6">
+            <h2 className="font-semibold text-[#3d2f27] mb-3">Google Drive Files</h2>
 
-            {/* Breadcrumbs */}
             {breadcrumbs.length > 0 && (
               <div className="flex items-center gap-1 text-sm mb-4 flex-wrap">
                 {breadcrumbs.map((crumb, i) => (
                   <span key={crumb.id} className="flex items-center gap-1">
-                    {i > 0 && <span className="text-gray-400">/</span>}
+                    {i > 0 && <span className="text-[#c9b5a6]">/</span>}
                     {i < breadcrumbs.length - 1 ? (
-                      <button onClick={() => navigateTo(i)} className="text-blue-600 hover:underline">
+                      <button onClick={() => navigateTo(i)} className="text-[#c17a5a] hover:underline">
                         {crumb.name}
                       </button>
                     ) : (
-                      <span className="text-gray-700 font-medium">{crumb.name}</span>
+                      <span className="text-[#3d2f27] font-medium">{crumb.name}</span>
                     )}
                   </span>
                 ))}
               </div>
             )}
 
-            {filesLoading && <p className="text-sm text-gray-400">Loading files...</p>}
+            {filesLoading && <p className="text-sm text-[#9c8e82]">Loading files...</p>}
             {filesError && <p className="text-sm text-red-500">{filesError}</p>}
             {!filesLoading && !filesError && files.length === 0 && (
-              <p className="text-sm text-gray-400">This folder is empty.</p>
+              <p className="text-sm text-[#9c8e82]">This folder is empty.</p>
             )}
 
             {folders.length > 0 && (
               <div className="mb-4">
-                <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-2">Folders</p>
+                <p className="text-xs font-semibold text-[#9c8e82] uppercase tracking-wide mb-2">Folders</p>
                 <ul className="space-y-1">
                   {folders.map((f) => (
                     <li key={f.id}>
                       <button
                         onClick={() => navigateInto(f)}
-                        className="flex items-center gap-2 text-sm text-gray-700 hover:text-blue-600 hover:underline w-full text-left py-1"
+                        className="flex items-center gap-2 text-sm text-[#3d2f27] hover:text-[#c17a5a] hover:underline w-full text-left py-1"
                       >
                         <span>📁</span>
                         <span>{f.name}</span>
@@ -215,7 +209,7 @@ async function createFile() {
             {docs.length > 0 && (
               <div>
                 {folders.length > 0 && (
-                  <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-2">Files</p>
+                  <p className="text-xs font-semibold text-[#9c8e82] uppercase tracking-wide mb-2">Files</p>
                 )}
                 <ul className="space-y-2">
                   {docs.map((f) => (
@@ -224,7 +218,7 @@ async function createFile() {
                         href={f.webViewLink ?? "#"}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-sm text-blue-600 hover:underline truncate flex-1"
+                        className="text-sm text-[#c17a5a] hover:underline truncate flex-1"
                       >
                         {f.name}
                       </a>
@@ -233,7 +227,7 @@ async function createFile() {
                           {fileLabel(f.mimeType)}
                         </span>
                         {f.modifiedTime && (
-                          <span className="text-xs text-gray-400 hidden sm:block">
+                          <span className="text-xs text-[#9c8e82] hidden sm:block">
                             {formatDate(f.modifiedTime)}
                           </span>
                         )}
@@ -244,8 +238,8 @@ async function createFile() {
               </div>
             )}
 
-            <div className="mt-4 pt-4 border-t border-gray-100">
-              <p className="text-xs font-medium text-gray-500 mb-2">Create new</p>
+            <div className="mt-4 pt-4 border-t border-[#efe7de]">
+              <p className="text-xs font-semibold text-[#9c8e82] mb-2">Create new</p>
               <div className="flex gap-2 flex-wrap">
                 <input
                   type="text"
@@ -253,12 +247,12 @@ async function createFile() {
                   onChange={(e) => setNewDocTitle(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && createFile()}
                   placeholder="Document title..."
-                  className="flex-1 min-w-0 text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                  className="flex-1 min-w-0 text-sm border border-[#e5ddd5] bg-white rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#c17a5a]/30 placeholder:text-[#c9b5a6]"
                 />
                 <select
                   value={newDocType}
                   onChange={(e) => setNewDocType(e.target.value as "doc" | "sheet")}
-                  className="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none"
+                  className="text-sm border border-[#e5ddd5] rounded-lg px-3 py-2 bg-white focus:outline-none text-[#3d2f27]"
                 >
                   <option value="doc">Doc</option>
                   <option value="sheet">Sheet</option>
@@ -266,7 +260,7 @@ async function createFile() {
                 <button
                   onClick={createFile}
                   disabled={creating || !newDocTitle.trim()}
-                  className="text-sm bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 disabled:opacity-50 transition-colors"
+                  className="text-sm bg-[#c17a5a] text-white px-4 py-2 rounded-lg hover:bg-[#a8634a] disabled:opacity-50 transition-colors font-medium"
                 >
                   {creating ? "Creating..." : "Create"}
                 </button>
@@ -277,8 +271,8 @@ async function createFile() {
         </div>
 
         {/* Tasks — 1/3 width */}
-        <section className="bg-white rounded-2xl border border-gray-200 p-6">
-          <h2 className="font-semibold text-gray-900 mb-4">Tasks</h2>
+        <section className="bg-[#fffdf9] rounded-2xl border border-[#e5ddd5] p-6">
+          <h2 className="font-semibold text-[#3d2f27] mb-4">Tasks</h2>
           <div className="flex gap-2 mb-4">
             <input
               type="text"
@@ -286,18 +280,18 @@ async function createFile() {
               onChange={(e) => setNewTask(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && addTask()}
               placeholder="Add a task..."
-              className="flex-1 text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+              className="flex-1 text-sm border border-[#e5ddd5] bg-white rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#c17a5a]/30 placeholder:text-[#c9b5a6]"
             />
             <button
               onClick={addTask}
-              className="text-sm bg-indigo-600 text-white px-3 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+              className="text-sm bg-[#c17a5a] text-white px-3 py-2 rounded-lg hover:bg-[#a8634a] transition-colors font-medium"
             >
               Add
             </button>
           </div>
-          {tasksLoading && <p className="text-sm text-gray-400">Loading tasks...</p>}
-          {!tasksLoading && tasks.length === 0 && <p className="text-sm text-gray-400">No tasks yet.</p>}
-          {tasksSaving && <p className="text-xs text-gray-400 mb-1">Saving...</p>}
+          {tasksLoading && <p className="text-sm text-[#9c8e82]">Loading tasks...</p>}
+          {!tasksLoading && tasks.length === 0 && <p className="text-sm text-[#9c8e82]">No tasks yet.</p>}
+          {tasksSaving && <p className="text-xs text-[#9c8e82] mb-1">Saving...</p>}
           <ul className="space-y-2">
             {tasks.map((t) => (
               <li key={t.id} className="flex items-center gap-2 group">
@@ -305,14 +299,14 @@ async function createFile() {
                   type="checkbox"
                   checked={t.done}
                   onChange={() => toggleTask(t.id)}
-                  className="rounded accent-indigo-600"
+                  className="rounded accent-[#6b8f71]"
                 />
-                <span className={`text-sm flex-1 ${t.done ? "line-through text-gray-400" : "text-gray-700"}`}>
+                <span className={`text-sm flex-1 ${t.done ? "line-through text-[#9c8e82]" : "text-[#3d2f27]"}`}>
                   {t.text}
                 </span>
                 <button
                   onClick={() => deleteTask(t.id)}
-                  className="text-gray-300 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity text-xs"
+                  className="text-[#c9b5a6] hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity text-xs"
                 >
                   ✕
                 </button>

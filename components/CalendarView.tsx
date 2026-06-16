@@ -22,11 +22,11 @@ type Props = {
 };
 
 const EVENT_COLORS: Record<string, string> = {
-  green: "#22c55e",
-  blue: "#3b82f6",
-  yellow: "#eab308",
-  purple: "#a855f7",
-  gray: "#6b7280",
+  green: "#5a8f62",
+  blue: "#4a7ab5",
+  yellow: "#c19435",
+  purple: "#7a5fa8",
+  gray: "#8a7a6e",
 };
 
 const SLUG_TO_COLOR: Record<string, string> = {
@@ -38,34 +38,34 @@ const SLUG_TO_COLOR: Record<string, string> = {
 
 const HEADER_COLORS: Record<string, { bar: string; title: string; toggle: string; activeToggle: string }> = {
   gray: {
-    bar: "bg-gray-600",
+    bar: "bg-[#8a7a6e]",
     title: "text-white",
-    toggle: "text-gray-200 hover:text-white",
-    activeToggle: "bg-gray-700 text-white shadow",
+    toggle: "text-white/70 hover:text-white",
+    activeToggle: "bg-white/20 text-white shadow",
   },
   green: {
-    bar: "bg-green-600",
+    bar: "bg-[#5a8f62]",
     title: "text-white",
-    toggle: "text-green-100 hover:text-white",
-    activeToggle: "bg-green-700 text-white shadow",
+    toggle: "text-white/70 hover:text-white",
+    activeToggle: "bg-white/20 text-white shadow",
   },
   blue: {
-    bar: "bg-blue-600",
+    bar: "bg-[#4a7ab5]",
     title: "text-white",
-    toggle: "text-blue-100 hover:text-white",
-    activeToggle: "bg-blue-700 text-white shadow",
+    toggle: "text-white/70 hover:text-white",
+    activeToggle: "bg-white/20 text-white shadow",
   },
   yellow: {
-    bar: "bg-yellow-500",
+    bar: "bg-[#c19435]",
     title: "text-white",
-    toggle: "text-yellow-100 hover:text-white",
-    activeToggle: "bg-yellow-600 text-white shadow",
+    toggle: "text-white/70 hover:text-white",
+    activeToggle: "bg-white/20 text-white shadow",
   },
   purple: {
-    bar: "bg-purple-600",
+    bar: "bg-[#7a5fa8]",
     title: "text-white",
-    toggle: "text-purple-100 hover:text-white",
-    activeToggle: "bg-purple-700 text-white shadow",
+    toggle: "text-white/70 hover:text-white",
+    activeToggle: "bg-white/20 text-white shadow",
   },
 };
 
@@ -79,12 +79,10 @@ export default function CalendarView({ events, loading, categoryColor = "blue" }
         const isAllDay = !e.start.includes("T");
         let start: Date, end: Date;
         if (isAllDay) {
-          // Parse date-only strings as local time to avoid UTC timezone shift
           const [sy, sm, sd] = e.start.split("-").map(Number);
           start = new Date(sy, sm - 1, sd);
           const endStr = e.end || e.start;
           const [ey, em, ed] = endStr.split("-").map(Number);
-          // Google Calendar uses exclusive end dates — subtract one day
           end = new Date(ey, em - 1, ed - 1);
           if (end < start) end = start;
         } else {
@@ -100,7 +98,7 @@ export default function CalendarView({ events, loading, categoryColor = "blue" }
   const header = HEADER_COLORS[categoryColor] ?? HEADER_COLORS.blue;
 
   return (
-    <section className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+    <section className="bg-[#fffdf9] rounded-2xl border border-[#e5ddd5] overflow-hidden">
       <div className={`flex items-center justify-between px-6 py-4 ${header.bar}`}>
         <h2 className={`font-semibold ${header.title}`}>Calendar</h2>
         <div className="flex gap-1 bg-black/10 rounded-lg p-1">
@@ -123,37 +121,36 @@ export default function CalendarView({ events, loading, categoryColor = "blue" }
         </div>
       </div>
       <div className="p-6 pt-4">
-
-      {loading ? (
-        <div className="h-64 flex items-center justify-center text-sm text-gray-400">
-          Loading events...
-        </div>
-      ) : (
-        <div className="rbc-wrapper">
-          <Calendar
-            localizer={localizer}
-            events={calEvents}
-            view={view}
-            onView={(v) => setView(v as "month" | "week")}
-            date={date}
-            onNavigate={(newDate) => setDate(newDate)}
-            toolbar={true}
-            style={{ height: view === "month" ? (typeof window !== "undefined" && window.innerWidth < 640 ? 340 : 500) : 400 }}
-            onSelectEvent={(e) => {
-              if (e.resource?.link) window.open(e.resource.link, "_blank");
-            }}
-            eventPropGetter={(e) => {
-              const slug = e.resource?.categorySlug;
-              const colorKey = slug ? (SLUG_TO_COLOR[slug] ?? categoryColor) : categoryColor;
-              const bgColor = EVENT_COLORS[colorKey] ?? defaultEventColor;
-              return {
-                className: "text-white text-xs rounded cursor-pointer",
-                style: { backgroundColor: bgColor, border: "none" },
-              };
-            }}
-          />
-        </div>
-      )}
+        {loading ? (
+          <div className="h-64 flex items-center justify-center text-sm text-[#9c8e82]">
+            Loading events...
+          </div>
+        ) : (
+          <div className="rbc-wrapper">
+            <Calendar
+              localizer={localizer}
+              events={calEvents}
+              view={view}
+              onView={(v) => setView(v as "month" | "week")}
+              date={date}
+              onNavigate={(newDate) => setDate(newDate)}
+              toolbar={true}
+              style={{ height: view === "month" ? (typeof window !== "undefined" && window.innerWidth < 640 ? 340 : 500) : 400 }}
+              onSelectEvent={(e) => {
+                if (e.resource?.link) window.open(e.resource.link, "_blank");
+              }}
+              eventPropGetter={(e) => {
+                const slug = e.resource?.categorySlug;
+                const colorKey = slug ? (SLUG_TO_COLOR[slug] ?? categoryColor) : categoryColor;
+                const bgColor = EVENT_COLORS[colorKey] ?? defaultEventColor;
+                return {
+                  className: "text-white text-xs rounded cursor-pointer",
+                  style: { backgroundColor: bgColor, border: "none" },
+                };
+              }}
+            />
+          </div>
+        )}
       </div>
     </section>
   );
